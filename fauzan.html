@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toko Elektronik 511</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --accent-color: #28a745;
+            --text-color: #333;
+            --bg-light: #f8f9fa;
+            --border-color: #dee2e6;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--bg-light);
+            color: var(--text-color);
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            margin-bottom: 5px;
+        }
+
+        #current-time {
+            font-size: 1em;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            padding: 25px;
+            box-sizing: border-box;
+        }
+
+        #product-display-section {
+            flex: 2;
+            min-width: 300px;
+        }
+
+        #product-list-section {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        #order-section {
+            flex-basis: 100%;
+            margin-top: 20px;
+        }
+
+        #product-image-container {
+            position: relative;
+            margin-bottom: 20px;
+            background-color: #eee;
+            border-radius: 6px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 250px;
+        }
+
+        #slideshow-image {
+            max-width: 100%;
+            max-height: 400px;
+            display: block;
+            margin: 0 auto;
+            border-radius: 6px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .slideshow-buttons {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+            padding: 0 10px;
+            box-sizing: border-box;
+        }
+
+        .slideshow-buttons button {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: background-color 0.3s ease;
+        }
+
+        .slideshow-buttons button:hover {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        #product-details h3 {
+            color: var(--primary-color);
+            margin-bottom: 8px;
+            font-size: 1.8em;
+        }
+
+        #product-price {
+            font-size: 1.4em;
+            font-weight: 600;
+            color: var(--accent-color);
+        }
+
+        #product-list ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        #product-list li {
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            background-color: var(--bg-light);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+
+        #product-list li:hover {
+            background-color: #e9ecef;
+            transform: translateY(-2px);
+        }
+
+        h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+        }
+
+        #order-form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 400;
+        }
+
+        #order-form input[type="text"],
+        #order-form input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 1em;
+        }
+
+        #order-form button {
+            padding: 12px 25px;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        #order-form button:hover {
+            background-color: #218838;
+        }
+
+        .error {
+            color: #dc3545;
+            font-size: 0.9em;
+            margin-top: -10px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        #order-summary {
+            margin-top: 30px;
+            background-color: #e9f7ee;
+            border: 1px solid var(--accent-color);
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        #order-summary h3 {
+            color: var(--accent-color);
+            margin-bottom: 15px;
+        }
+
+        #order-summary p {
+            margin-bottom: 8px;
+        }
+
+        #order-summary strong {
+            color: var(--primary-color);
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+
+            #product-display-section,
+            #product-list-section,
+            #order-section {
+                flex-basis: auto;
+                min-width: unset;
+            }
+        }
+    </style>
+</head>
+<body onload="initApp()">
+    <header>
+        <h1>Toko Elektronik 511</h1>
+        <p id="current-time"></p>
+    </header>
+
+    <div class="main-content">
+        <div id="product-display-section" class="section-card">
+            <div id="product-image-container">
+                <img id="slideshow-image" src="" alt="Product Image">
+                <div class="slideshow-buttons">
+                    <button onclick="gantiGambar(-1)">&#10094;</button>
+                    <button onclick="gantiGambar(1)">&#10095;</button>
+                </div>
+            </div>
+            <div id="product-details">
+                <h3 id="product-name"></h3>
+                <p id="product-price"></p>
+            </div>
+        </div>
+
+        <div id="product-list-section" class="section-card">
+            <h2>Daftar Produk</h2>
+            <ul id="daftar-produk">
+            </ul>
+        </div>
+
+        <div id="order-section" class="section-card">
+            <h2>Form Pemesanan</h2>
+            <form onsubmit="return handleOrder()">
+                <label for="namaPemesan">Nama Pemesan:</label>
+                <input type="text" id="namaPemesan" name="namaPemesan" placeholder="Masukkan nama Anda"><br>
+                <small id="nama-error" class="error"></small>
+
+                <label for="jumlahPesan">Jumlah Pesan:</label>
+                <input type="number" id="jumlahPesan" name="jumlahPesan" min="1" value="1" placeholder="Min. 1"><br>
+                <small id="jumlah-error" class="error"></small>
+
+                <label for="kodePromo">Kode Promo (Opsional):</label>
+                <input type="text" id="kodePromo" name="kodePromo" placeholder="Contoh: DISKON10"><br>
+
+                <button type="submit">Pesan Sekarang</button>
+            </form>
+            <div id="order-summary">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateJam() {
+            const sekarang = new Date();
+            let jam = sekarang.getHours();
+            let menit = sekarang.getMinutes();
+            let detik = sekarang.getSeconds();
+
+            jam = (jam < 10 ? "0" : "") + jam;
+            menit = (menit < 10 ? "0" : "") + menit;
+            detik = (detik < 10 ? "0" : "") + detik;
+
+            const waktuString = sekarang.toLocaleDateString('id-ID', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            }) + " " + jam + ":" + menit + ":" + detik;
+            document.getElementById("current-time").innerText = waktuString;
+        }
+
+        function jalankanJam() {
+            setInterval(updateJam, 1000);
+            updateJam();
+        }
+
+        const products = [{
+            name: "Laptop Ultrabook X1",
+            price: 15500000,
+            images: [
+                "laptop 1.1.jpg",
+                "laptop 1.2.jpg",
+                
+            ]
+        }, {
+            name: "Smartphone Flagship Pro 2",
+            price: 9250000,
+            images: [
+                "hp 1.1.jpg",
+                "hp 1.2.jpg",
+                
+            ]
+        }, {
+            name: "Smart TV QLED 65 inch",
+            price: 18000000,
+            images: [
+                "tv 1.1.jpg",
+                "tv 1.2.jpg",
+                
+            ]
+        }, ]
+
+        let currentProductIndex = 0;
+        let currentImageIndex = 0;
+
+        function displayProduct(productIndex) {
+            currentProductIndex = productIndex;
+            currentImageIndex = 0;
+            const product = products[currentProductIndex];
+
+            document.getElementById("product-name").innerText = product.name;
+            document.getElementById("product-price").innerText = "Harga: Rp " + product.price.toLocaleString('id-ID');
+            document.getElementById("slideshow-image").src = product.images[currentImageIndex];
+        }
+
+        function gantiGambar(arah) {
+            const product = products[currentProductIndex];
+            currentImageIndex += arah;
+
+            if (currentImageIndex >= product.images.length) {
+                currentImageIndex = 0;
+            }
+            if (currentImageIndex < 0) {
+                currentImageIndex = product.images.length - 1;
+            }
+            document.getElementById("slideshow-image").src = product.images[currentImageIndex];
+        }
+
+        function populateProductList() {
+            const daftarProdukUl = document.getElementById("daftar-produk");
+            daftarProdukUl.innerHTML = "";
+            for (let i = 0; i < products.length; i++) {
+                const li = document.createElement("li");
+                li.innerText = products[i].name;
+                li.setAttribute("data-index", i);
+                li.onclick = function() {
+                    displayProduct(parseInt(this.getAttribute("data-index")));
+                };
+                daftarProdukUl.appendChild(li);
+            }
+        }
+
+        function handleOrder() {
+            const namaPemesan = document.getElementById("namaPemesan").value;
+            const jumlahPesan = parseInt(document.getElementById("jumlahPesan").value);
+            const kodePromo = document.getElementById("kodePromo").value;
+
+            const namaError = document.getElementById("nama-error");
+            const jumlahError = document.getElementById("jumlah-error");
+            namaError.innerHTML = "";
+            jumlahError.innerHTML = "";
+
+            let isValid = true;
+
+            if (namaPemesan.trim() === "") {
+                namaError.innerHTML = "Nama pemesan tidak boleh kosong!";
+                isValid = false;
+            }
+            if (isNaN(jumlahPesan) || jumlahPesan <= 0) {
+                jumlahError.innerHTML = "Jumlah harus angka dan lebih dari 0!";
+                isValid = false;
+            }
+
+            if (!isValid) {
+                return false;
+            }
+
+            const product = products[currentProductIndex];
+            let subtotal = product.price * jumlahPesan;
+            let potongan = 0;
+            let totalAkhir = subtotal;
+
+            if (kodePromo.toUpperCase() === "DISKON10") {
+                potongan = subtotal * 0.10;
+                totalAkhir = subtotal - potongan;
+            } else if (kodePromo.trim() !== "") {
+                alert("Kode promo tidak valid!");
+                document.getElementById("kodePromo").value = "";
+                return false;
+            }
+
+            const orderId = "511-" + (Math.floor(Math.random() * 90000) + 10000);
+
+            const orderSummaryElement = document.getElementById("order-summary");
+            orderSummaryElement.innerHTML = `
+                <h3>Ringkasan Pesanan Anda</h3>
+                <p><strong>Order ID:</strong> ${orderId}</p>
+                <p><strong>Nama Pemesan:</strong> ${namaPemesan}</p>
+                <p><strong>Produk:</strong> ${product.name}</p>
+                <p><strong>Jumlah:</strong> ${jumlahPesan}</p>
+                <p><strong>Subtotal:</strong> Rp ${subtotal.toLocaleString('id-ID')}</p>
+                <p><strong>Potongan (${kodePromo.toUpperCase() === "DISKON10" ? 'DISKON10' : 'Tidak Ada'}):</strong> Rp ${potongan.toLocaleString('id-ID')}</p>
+                <p><strong>Total Akhir:</strong> Rp ${totalAkhir.toLocaleString('id-ID')}</p>
+            `;
+
+            document.getElementById("namaPemesan").value = "";
+            document.getElementById("jumlahPesan").value = "1";
+            document.getElementById("kodePromo").value = "";
+
+            alert("Pemesanan berhasil dengan Order ID: " + orderId + "!");
+            return false;
+        }
+
+        function initApp() {
+            jalankanJam();
+            populateProductList();
+            displayProduct(0);
+        }
+    </script>
+</body>
+</html>
